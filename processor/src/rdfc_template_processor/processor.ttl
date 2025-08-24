@@ -1,0 +1,26 @@
+@prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+rdfc:TemplateProcessorPy rdfc:pyImplementationOf rdfc:Processor;
+    rdfs:label "Python Template Processor";
+    rdfs:comment "Template processor to kickstart the development of your next Python RDF-Connect processor.";
+    rdfc:module_path "rdfc_template_processor.processor";
+    rdfc:class "TemplateProcessor".
+
+[ ] a sh:NodeShape;
+    sh:targetClass rdfc:TemplateProcessorPy;
+    sh:property [
+        sh:class rdfc:Reader;
+        sh:path rdfc:reader;
+        sh:name "reader";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ], [
+        sh:class rdfc:Writer;
+        sh:path rdfc:writer;
+        sh:name "writer";
+        sh:minCount 0;
+        sh:maxCount 1;
+    ].
