@@ -1,0 +1,186 @@
+@base <http://example.com/>.
+@prefix rr:    <http://www.w3.org/ns/r2rml#> .
+@prefix rml:   <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql:    <http://semweb.mmlab.be/ns/ql#> .
+@prefix sosa:  <http://www.w3.org/ns/sosa/> .
+@prefix gsp:   <http://www.opengis.net/ont/geosparql#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix cdt:   <https://w3id.org/cdt/> .
+@prefix ex:    <http://example.org/> .
+@prefix weat:  <https://bimerr.iot.linkeddata.es/def/weather#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfc: <https://w3id.org/rdf-connect#> .
+
+#################################################################
+# Logical Sources
+#################################################################
+
+# Root-level record
+<#RootSource>
+  rml:source [
+    a rdfc:Source;
+    rdfc:reader ex:source1;
+  ];
+  rml:referenceFormulation ql:JSONPath ;
+  rml:iterator "$" .
+
+#################################################################
+# Triples Map: Geometry (exactly one node per feature)
+#################################################################
+<#GeometryMapping>
+  rml:logicalSource <#RootSource> ;
+
+  rr:subjectMap [
+    rr:termType rr:BlankNode ;
+    rr:template "geom-{$.features[*].properties.station}" ;
+    rr:class gsp:Geometry
+  ] ;
+
+  # Build a single WKT from lon/lat
+  rr:predicateObjectMap [
+    rr:predicate gsp:asWKT ;
+    rr:objectMap [
+      rr:template "POINT({$.features[*].geometry.coordinates[0]} {$.features[*].geometry.coordinates[1]})" ;
+      rr:datatype gsp:wktLiteral
+    ]
+  ] .
+
+#################################################################
+# Triples Map: Feature / Station
+#################################################################
+<#FeatureMapping>
+  rml:logicalSource <#RootSource> ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/feature{$.features[*].properties.station}" ;
+    rr:class gsp:Feature, sosa:FeatureOfInterest
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate dcterms:identifier ;
+    rr:objectMap [ rml:reference "$.features[*].properties.station" ]
+  ] ;
+
+  # Link to the SAME geometry bnode via explicit join on station
+  rr:predicateObjectMap [
+    rr:predicate gsp:hasGeometry ;
+    rr:objectMap [
+      rr:parentTriplesMap <#GeometryMapping> ;
+      rr:joinCondition [
+        rr:child  "$.features[*].properties.station" ;
+        rr:parent "$.features[*].properties.station"
+      ]
+    ]
+  ] .
+
+#################################################################
+# Triples Map: Observation Collection
+#################################################################
+<#ObservationCollection>
+  rml:logicalSource <#RootSource> ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/obsCollection{$.features[*].properties.station}" ;
+    rr:class sosa:ObservationCollection
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasFeatureOfInterest ;
+    rr:objectMap [ rr:template "http://example.org/feature{$.features[*].properties.station}" ]
+  ] ;
+
+  # Timestamp from the root (same for all features)
+  rr:predicateObjectMap [
+    rr:predicate sosa:phenomenonTime ;
+    rr:objectMap [ rml:reference "$.timestamps[0]" ; rr:datatype xsd:dateTime ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasMember ;
+    rr:objectMap [ rr:parentTriplesMap <#TemperatureObs> ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasMember ;
+    rr:objectMap [ rr:parentTriplesMap <#PrecipitationObs> ]
+  ] .
+
+#################################################################
+# Triples Map: Temperature Observation
+#################################################################
+<#TemperatureObs>
+  rml:logicalSource <#RootSource> ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/obs{$.features[*].properties.station}_temp" ;
+    rr:class sosa:Observation
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasFeatureOfInterest ;
+    rr:objectMap [ rr:template "http://example.org/feature{$.features[*].properties.station}" ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:observedProperty ;
+    rr:object weat:Temperature
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [ rml:reference "$.features[*].properties.parameters.TL.name" ; rr:language "de" ]
+  ] ;
+
+  # Timestamp from the root
+  rr:predicateObjectMap [
+    rr:predicate sosa:resultTime ;
+    rr:objectMap [ rml:reference "$.timestamps[0]" ; rr:datatype xsd:dateTime ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasSimpleResult ;
+    rr:objectMap [
+      rr:datatype cdt:ucum ;
+      rr:template "{$.features[*].properties.parameters.TL.data[0]} '{$.features[*].properties.parameters.TL.unit}'"
+    ]
+  ] .
+
+#################################################################
+# Triples Map: Precipitation Observation
+#################################################################
+<#PrecipitationObs>
+  rml:logicalSource <#RootSource> ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/obs{$.features[*].properties.station}_precip" ;
+    rr:class sosa:Observation
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasFeatureOfInterest ;
+    rr:objectMap [ rr:template "http://example.org/feature{$.features[*].properties.station}" ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:observedProperty ;
+    rr:object weat:Rainfall
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [ rml:reference "$.features[*].properties.parameters.RR.name" ; rr:language "de" ]
+  ] ;
+
+  # Timestamp from the root
+  rr:predicateObjectMap [
+    rr:predicate sosa:resultTime ;
+    rr:objectMap [ rml:reference "$.timestamps[0]" ; rr:datatype xsd:dateTime ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sosa:hasSimpleResult ;
+    rr:objectMap [
+      rr:datatype cdt:ucum ;
+      rr:template "{$.features[*].properties.parameters.RR.data[0]} '{$.features[*].properties.parameters.RR.unit}'"
+    ]
+  ] .

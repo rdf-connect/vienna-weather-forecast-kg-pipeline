@@ -1,0 +1,98 @@
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix sosa:   <http://www.w3.org/ns/sosa/> .
+@prefix gsp:    <http://www.opengis.net/ont/geosparql#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix cdt:    <https://w3id.org/cdt/> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:     <http://example.org/shapes/> .
+
+#################################################################
+# Shape for ObservationCollection
+#################################################################
+ex:ObservationCollectionShape a sh:NodeShape ;
+    sh:targetClass sosa:ObservationCollection ;
+
+    sh:property [
+        sh:path sosa:hasFeatureOfInterest ;
+        sh:class gsp:Feature ;
+        sh:node ex:FeatureShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:hasMember ;
+        sh:class sosa:Observation ;
+        sh:node ex:ObservationShape ;
+        sh:minCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:phenomenonTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+#################################################################
+# Shape for Observations
+#################################################################
+ex:ObservationShape a sh:NodeShape ;
+    sh:class sosa:Observation ;
+
+    sh:property [
+      	sh:path rdfs:label ;
+        sh:minCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:hasFeatureOfInterest ;
+        sh:class gsp:Feature ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:observedProperty ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:resultTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    sh:property [
+        sh:path sosa:hasSimpleResult ;
+        sh:datatype cdt:ucum ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+#################################################################
+# Shape for Features
+#################################################################
+ex:FeatureShape a sh:NodeShape ;
+    sh:class gsp:Feature ;
+
+    sh:property [
+        sh:path gsp:hasGeometry ;
+        sh:class gsp:Geometry ;
+        sh:node ex:GeometryShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+#################################################################
+# Shape for Geometry
+#################################################################
+ex:GeometryShape a sh:NodeShape ;
+    sh:class gsp:Geometry ;
+
+    sh:property [
+        sh:path gsp:asWKT ;
+        sh:datatype gsp:wktLiteral ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .

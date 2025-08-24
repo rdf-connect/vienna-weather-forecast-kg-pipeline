@@ -1,0 +1,22 @@
+{
+  "name": "vienna-weather-forecast-kg-pipeline",
+  "version": "0.0.1",
+  "description": "RDF-Connect pipeline to ingest Vienna's weather forecast in a knowledge graph.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline.git"
+  },
+  "author": "Ieben Smessaert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline/issues"
+  },
+  "homepage": "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline",
+  "dependencies": {
+    "@rdfc/orchestrator-js": "^1.0.6"
+  }
+}

@@ -1,0 +1,37 @@
+services:
+  virtuoso:
+    container_name: virtuoso
+    image: openlink/virtuoso-opensource-7:latest
+    environment:
+      DBA_PASSWORD: semantics2025
+      SPARQL_UPDATE: true
+    ports:
+      - 1111:1111
+      - 8890:8890
+    restart: always
+    volumes:
+      - ./virtuoso-data:/data
+      - ./setup_permissions.sql:/docker-entrypoint-initdb.d/setup_permissions.sql
+    healthcheck:
+      test: wget --spider -q http://localhost:8890 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  virtuoso-permissions:
+    container_name: virtuoso-permissions
+    image: docker
+    privileged: true
+    working_dir: "/virtuoso-permissions"
+    volumes:
+      - ".:/virtuoso-permissions"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: docker exec virtuoso /opt/virtuoso-opensource/bin/isql 1111 dba semantics2025 /docker-entrypoint-initdb.d/setup_permissions.sql
+    depends_on:
+      virtuoso:
+        condition: service_healthy
