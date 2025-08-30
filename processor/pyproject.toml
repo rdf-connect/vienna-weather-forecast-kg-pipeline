@@ -13,6 +13,11 @@ dependencies = [
     "pytest-asyncio>=1.1.0",
     "rdfc-proto>=0.0.1",
     "rdfc-runner>=0.0.3",
+    "rdflib>=7.1.4",
+    "sacremoses>=0.1.1",
+    "sentencepiece>=0.2.1",
+    "torch>=2.8.0",
+    "transformers>=4.56.0",
 ]
 
 [project.urls]

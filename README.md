@@ -606,11 +606,11 @@ We’ll translate German literals using the Hugging Face model [Helsinki-NLP/opu
 
 **Steps:**
 
-- [ ] Install `transformers` and its dependencies (`sacremoses`, `sentencepiece` and `torch`), and the `rdflib` library for RDF parsing:
+- [x] Install `transformers` and its dependencies (`sacremoses`, `sentencepiece` and `torch`), and the `rdflib` library for RDF parsing:
   ```bash
   uv add transformers sacremoses sentencepiece torch rdflib
   ```  
-- [ ] Define the processor's argument types, which include the RDF-Connect reader and writer channels, the ML model name, the source and target translation languages
+- [x] Define the processor's argument types, which include the RDF-Connect reader and writer channels, the ML model name, the source and target translation languages
   ```python
   # --- Type Definitions ---
   @dataclass
@@ -663,7 +663,7 @@ We’ll translate German literals using the Hugging Face model [Helsinki-NLP/opu
           sh:maxCount 1;
       ].
   ```
-- [ ] Load the model + tokenizer in `TranslationProcessor.init`  
+- [x] Load the model + tokenizer in `TranslationProcessor.init`  
   ```python
   from transformers import pipeline
   #...
@@ -673,7 +673,7 @@ We’ll translate German literals using the Hugging Face model [Helsinki-NLP/opu
       self.logger.debug("Initializing TranslationProcessor with args: {}".format(self.args))
       self.translator = pipeline(task='translation', model=self.args.model)
   ```
-- [ ] In `transform`, implement the logic to translate language-tagged literals:
+- [x] In `transform`, implement the logic to translate language-tagged literals:
   - parse RDF triples with `rdflib`  
   - Identify literals in German having a `@de` tag  
   - Translate to English  
@@ -719,7 +719,7 @@ We’ll translate German literals using the Hugging Face model [Helsinki-NLP/opu
         await self.args.writer.close()
         self.logger.debug("done reading so closed writer.")
     ```
-- [ ] (Optional) Add unit tests
+- [x] (Optional) Add unit tests
   ```python
   @pytest.mark.asyncio
   async def test_translation_process(caplog):
@@ -750,7 +750,7 @@ We’ll translate German literals using the Hugging Face model [Helsinki-NLP/opu
       # Debug log at end should appear
       assert "done reading so closed writer." in caplog.text
   ```
-- [ ] Run the tests
+- [x] Run the tests
   ```bash
   hatch test
   ```
