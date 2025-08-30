@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-import rdfc_template_processor.processor as processor
+import rdfc_translation_processor.processor as processor
 
 
 class DummyReader:
@@ -23,8 +23,8 @@ async def test_transform_writes_and_closes_writer(caplog):
     reader = DummyReader(messages)
     writer = AsyncMock()
 
-    args = processor.TemplateArgs(reader=reader, writer=writer)
-    proc = processor.TemplateProcessor(args)
+    args = processor.TranslationArgs(reader=reader, writer=writer)
+    proc = processor.TranslationProcessor(args)
 
     caplog.set_level(logging.DEBUG)
 
@@ -47,8 +47,8 @@ async def test_transform_without_writer(caplog):
     messages = ["foo", "bar"]
     reader = DummyReader(messages)
 
-    args = processor.TemplateArgs(reader=reader, writer=None)
-    proc = processor.TemplateProcessor(args)
+    args = processor.TranslationArgs(reader=reader, writer=None)
+    proc = processor.TranslationProcessor(args)
 
     caplog.set_level(logging.INFO)
 

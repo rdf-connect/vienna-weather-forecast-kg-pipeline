@@ -1,31 +1,34 @@
-# template-processor-py
+# translation-processor-py
 
-Template processor to kickstart the development of your next Python RDF-Connect processor.
+A processor to translate text using a specified ML translation model.
 
 ## Usage
 
-To use the Python TemplateProcessor in your RDF-Connect pipeline, you need to have a pipeline configuration that includes the [rdfc:PyRunner](https://github.com/rdf-connect/py-runner) (check out their documentation to find out how to install and configure it).
+To use the Python TranslationProcessor in your RDF-Connect pipeline, you need to have a pipeline configuration that includes the [rdfc:PyRunner](https://github.com/rdf-connect/py-runner) (check out their documentation to find out how to install and configure it).
 
-Next, you can add the Python TemplateProcessor to your pipeline configuration as follows:
+Next, you can add the Python TranslationProcessor to your pipeline configuration as follows:
 
 ```turtle
 @prefix rdfc: <https://w3id.org/rdf-connect#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 
 # Import the processor
-<> owl:imports <./.venv/lib/python3.13/site-packages/rdfc_template_processor/processor.ttl>.
+<> owl:imports <./.venv/lib/python3.13/site-packages/rdfc_translation_processor/processor.ttl>.
 
 ### Define the channels your processor needs
 <channel1> a rdfc:Writer, rdfc:Reader.
 <channel2> a rdfc:Writer, rdfc:Reader.
 
 # Attach the processor to the pipeline under the PyRunner
-# Add the `rdfc:processor <template>` statement under the `rdfc:consistsOf` statement of the `rdfc:PyRunner`
+# Add the `rdfc:processor <translator>` statement under the `rdfc:consistsOf` statement of the `rdfc:PyRunner`
 
 # Define and configure the processor
-<template> a rdfc:TemplateProcessorPy;
+<translator> a rdfc:TranslationProcessor;
       rdfc:reader <channel1>;
-      rdfc:writer <channel2>".
+      rdfc:writer <channel2>;
+      rdfc:model "Helsinki-NLP/opus-mt-de-en";
+      rdfc:sourceLanguage "de";
+      rdfc:targetLanguage "en".
 ```
 
 ## Development
@@ -97,14 +100,14 @@ def my_function():
 ### Project Structure
 
 ```
-template-processor-py/             # Root directory of the project
-├── src/                           # Source code directory
-│   └── rdfc_template_processor/   # Package directory
-│       ├── __init__.py            # Package initialization, allows importing as a regular package
-│       ├── processor.py           # Contains the main logic for the Python processor
-│       └── processor.ttl          # RDF schema for the processor, used for metadata and configuration
-├── tests/                         # Directory for unit tests
-└── pyproject.toml                 # Project metadata and build configuration
+translation-processor-py/             # Root directory of the project
+├── src/                              # Source code directory
+│   └── rdfc_translation_processor/   # Package directory
+│       ├── __init__.py               # Package initialization, allows importing as a regular package
+│       ├── processor.py              # Contains the main logic for the Python processor
+│       └── processor.ttl             # RDF schema for the processor, used for metadata and configuration
+├── tests/                            # Directory for unit tests
+└── pyproject.toml                    # Project metadata and build configuration
 ```
 
 

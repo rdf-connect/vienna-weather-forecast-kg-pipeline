@@ -1,0 +1,44 @@
+@prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+rdfc:TranslationProcessor rdfc:pyImplementationOf rdfc:Processor;
+    rdfs:label "Translation Processor";
+    rdfs:comment "A processor to translate text using a specified ML translation model.";
+    rdfc:module_path "rdfc_translation_processor.processor";
+    rdfc:class "TranslationProcessor".
+
+[ ] a sh:NodeShape;
+    sh:targetClass rdfc:TranslationProcessor;
+    sh:property [
+        sh:class rdfc:Reader;
+        sh:path rdfc:reader;
+        sh:name "reader";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ], [
+        sh:class rdfc:Writer;
+        sh:path rdfc:writer;
+        sh:name "writer";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ], [
+        sh:datatype xsd:string;
+        sh:path rdfc:model;
+        sh:name "model";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ], [
+        sh:datatype xsd:string;
+        sh:path rdfc:sourceLanguage;
+        sh:name "source_language";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ], [
+        sh:datatype xsd:string;
+        sh:path rdfc:targetLanguage;
+        sh:name "target_language";
+        sh:minCount 1;
+        sh:maxCount 1;
+    ].
