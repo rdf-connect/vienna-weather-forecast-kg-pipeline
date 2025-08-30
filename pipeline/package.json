@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline",
   "dependencies": {
+    "@rdfc/file-utils-processors-ts": "^1.0.0",
     "@rdfc/http-utils-processor-ts": "^1.0.1",
     "@rdfc/js-runner": "^2.0.0",
     "@rdfc/log-processor-ts": "^2.0.0",
