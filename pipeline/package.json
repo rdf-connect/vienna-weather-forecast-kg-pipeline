@@ -21,6 +21,7 @@
     "@rdfc/http-utils-processor-ts": "^1.0.1",
     "@rdfc/js-runner": "^2.0.0",
     "@rdfc/log-processor-ts": "^2.0.0",
-    "@rdfc/orchestrator-js": "^1.0.6"
+    "@rdfc/orchestrator-js": "^1.0.6",
+    "@rdfc/shacl-processor-ts": "^1.0.0"
   }
 }
