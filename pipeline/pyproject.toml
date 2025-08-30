@@ -1,0 +1,37 @@
+[project]
+name = "vienna-weather-forecast-kg-pipeline"
+version = "0.0.1"
+description = "RDF-Connect pipeline to ingest Vienna's weather forecast in a knowledge graph."
+authors = [
+    { name = "Ieben Smessaert", email = "ieben.smessaert@ugent.be" }
+]
+readme = "README.md"
+requires-python = "==3.13.*"
+license = "MIT"
+dependencies = [
+    "rdfc-runner>=0.0.3",
+    "rdfc-translation-processor",
+]
+
+[project.urls]
+Homepage = "https://rdf-connect.github.io"
+Repository = "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline"
+Issues = "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["resources"]
+
+[tool.hatch.envs.default]
+type = "virtual"
+path = ".venv"
+system-packages = false
+installer = "uv"
+env-vars = { PYTHONPATH = "src" }
+
+[tool.uv.sources]
+rdfc-translation-processor = { path = "../processor/dist/rdfc_translation_processor-0.0.1.tar.gz" }
+
