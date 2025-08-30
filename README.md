@@ -136,7 +136,7 @@ Configure the pipeline to fetch weather data from GeoSphere Austria (station `11
 
 **Steps:**
 
-- [ ] Add an `rdfc:HttpFetch` processor instance
+- [x] Add an `rdfc:HttpFetch` processor instance
   - Install the processor
     ```bash
     npm install @rdfc/http-utils-processor-ts
@@ -159,7 +159,7 @@ Configure the pipeline to fetch weather data from GeoSphere Austria (station `11
         rdfc:url <https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL,RR&station_ids=11035>;
         rdfc:writer <json>.
     ```
-- [ ] Add an `rdfc:NodeRunner` Node.js runner instance
+- [x] Add an `rdfc:NodeRunner` Node.js runner instance
   - Install the runner
     ```bash
     npm install @rdfc/js-runner
@@ -178,7 +178,7 @@ Configure the pipeline to fetch weather data from GeoSphere Austria (station `11
          rdfc:processor <fetcher>;
      ].
     ```
-- [ ] Add a `rdfc:LogProcessorJs` processor instance
+- [x] Add a `rdfc:LogProcessorJs` processor instance
   - Install the processor
     ```bash
     npm install @rdfc/log-processor-ts
@@ -206,7 +206,7 @@ Configure the pipeline to fetch weather data from GeoSphere Austria (station `11
            rdfc:processor <fetcher>, <logger>;
        ].
     ```
-- [ ] Run the pipeline:  
+- [x] Run the pipeline:  
   ```bash
   npx rdfc pipeline.ttl
   # or with debug logging:
