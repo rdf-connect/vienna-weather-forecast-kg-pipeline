@@ -4,16 +4,32 @@
 
 
 ### Import runners and processors
+<> owl:imports <./node_modules/@rdfc/js-runner/index.ttl>.
 
+<> owl:imports <./node_modules/@rdfc/http-utils-processor-ts/processors.ttl>.
+<> owl:imports <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
 
 
 ### Define the channels
-
+<json> a rdfc:Reader, rdfc:Writer.
 
 
 ### Define the pipeline
-<> a rdfc:Pipeline.
+<> a rdfc:Pipeline;
+   rdfc:consistsOf [
+       rdfc:instantiates rdfc:NodeRunner;
+       rdfc:processor <fetcher>, <logger>;
+   ].
 
 
 ### Define the processors
+# Processor to fetch data from a JSON API
+<fetcher> a rdfc:HttpFetch;
+    rdfc:url "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL,RR&station_ids=11035";
+    rdfc:writer <json>.
 
+# Processor to log the output
+<logger> a rdfc:LogProcessorJs;
+      rdfc:reader <json>;
+      rdfc:level "info";
+      rdfc:label "output".
