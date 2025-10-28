@@ -583,16 +583,16 @@ We will use the [template-processor-py](https://github.com/rdf-connect/template-
 
 **Steps:**
 
-- [ ] Either clone the template or use the preconfigured project in `processor/`  
-- [ ] Install dependencies (see the `README.md` in the `procesor/` directory) 
+- [x] Either clone the template or use the preconfigured project in `processor/`  
+- [x] Install dependencies (see the `README.md` in the `procesor/` directory) 
   - Create a virtual environment using `hatch`
     ```bash
     hatch env create
     hatch shell
     ```
-- [ ] Rename the template processor (e.g., `TranslationProcessor`) in `processor.py`, `processor.ttl`, `pyproject.toml`, and `README.md`
+- [x] Rename the template processor (e.g., `TranslationProcessor`) in `processor.py`, `processor.ttl`, `pyproject.toml`, and `README.md`
   - See "Next Steps" in the `README.md` file of the template repository for guidance.
-- [ ] Build and verify  
+- [x] Build and verify  
   ```bash
   hatch build
   hatch test
