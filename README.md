@@ -492,7 +492,7 @@ The instance provided in the Docker Compose file is configured to be accessible 
 
 **Steps:**
 
-- [ ] Add the `rdfc:SPARQLIngest` processor instance to ingest RDF data into the Virtuoso instance
+- [x] Add the `rdfc:SPARQLIngest` processor instance to ingest RDF data into the Virtuoso instance
   - Install the processor
     ```bash
     npm install @rdfc/sparql-ingest-processor-ts
@@ -533,7 +533,7 @@ The instance provided in the Docker Compose file is configured to be accessible 
            rdfc:processor <mapper>;
        ].
     ```
-- [ ] Change the input channel of the first `rdfc:LogProcessorJs` processor to the output channel of the `rdfc:SPARQLIngest` processor to log the SPARQL queries that are sent to the Virtuoso instance.
+- [x] Change the input channel of the first `rdfc:LogProcessorJs` processor to the output channel of the `rdfc:SPARQLIngest` processor to log the SPARQL queries that are sent to the Virtuoso instance.
     ```turtle
     ### Define the processors
     # Processor to log the output
@@ -542,12 +542,12 @@ The instance provided in the Docker Compose file is configured to be accessible 
         rdfc:level "info";
         rdfc:label "output".
     ```
-- [ ] Start the Virtuoso instance via Docker Compose (if you haven't already)
+- [x] Start the Virtuoso instance via Docker Compose (if you haven't already)
   ```bash
   cd resources
   docker-compose up -d
   ```
-- [ ] Run the pipeline:  
+- [x] Run the pipeline:  
   ```bash
   npx rdfc pipeline.ttl
   # or with debug logging:
