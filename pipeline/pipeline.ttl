@@ -5,20 +5,28 @@
 
 ### Import runners and processors
 <> owl:imports <./node_modules/@rdfc/js-runner/index.ttl>.
+<> owl:imports <https://javadoc.jitpack.io/com/github/rdf-connect/jvm-runner/runner/master-SNAPSHOT/runner-master-SNAPSHOT-index.jar>.
 
 <> owl:imports <./node_modules/@rdfc/http-utils-processor-ts/processors.ttl>.
 <> owl:imports <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
+<> owl:imports <./node_modules/@rdfc/file-utils-processors-ts/processors.ttl>.
+<> owl:imports <./build/plugins/rml-processor-jvm-master-SNAPSHOT-all.jar>.
 
 
 ### Define the channels
 <json> a rdfc:Reader, rdfc:Writer.
+<mappingData> a rdfc:Reader, rdfc:Writer.
+<rdf> a rdfc:Reader, rdfc:Writer.
 
 
 ### Define the pipeline
 <> a rdfc:Pipeline;
    rdfc:consistsOf [
        rdfc:instantiates rdfc:NodeRunner;
-       rdfc:processor <fetcher>, <logger>;
+       rdfc:processor <fetcher>, <logger>, <mappingReader>;
+   ], [
+       rdfc:instantiates rdfc:JvmRunner;
+       rdfc:processor <mapper>;
    ].
 
 
@@ -28,8 +36,27 @@
     rdfc:url "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL,RR&station_ids=11035";
     rdfc:writer <json>.
 
+# Processor to read and stream out the RML mappings
+<mappingReader> a rdfc:GlobRead;
+    rdfc:glob <./resources/mapping.rml.ttl>;
+    rdfc:output <mappingData>;
+    rdfc:closeOnEnd true.
+
+# Processor to do the RML mapping
+<mapper> a rdfc:RmlMapper;
+    rdfc:mappings <mappingData>;
+    rdfc:source [
+        rdfc:triggers true;
+        rdfc:reader <json>;
+        rdfc:mappingId ex:source1;
+    ];
+    rdfc:defaultTarget [
+        rdfc:writer <rdf>;
+        rdfc:format "turtle";
+    ].
+
 # Processor to log the output
 <logger> a rdfc:LogProcessorJs;
-      rdfc:reader <json>;
+      rdfc:reader <rdf>;
       rdfc:level "info";
       rdfc:label "output".

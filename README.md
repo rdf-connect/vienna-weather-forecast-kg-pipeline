@@ -234,7 +234,7 @@ To help you with this, we prepared an [RML mapping file](./pipeline/resources/ma
 
 **Steps:**
 
-- [ ] Use `rdfc:GlobRead` to read the RML mapping file
+- [x] Use `rdfc:GlobRead` to read the RML mapping file
   - Install this Node.js processor
     ```bash
     npm install @rdfc/file-utils-processors-ts
@@ -267,7 +267,7 @@ To help you with this, we prepared an [RML mapping file](./pipeline/resources/ma
            rdfc:processor <fetcher>, <logger>, <mappingReader>;
        ].
     ```
-- [ ] Add a Java Virtual Machine (JVM) runner (`rdfc:JvmRunner`) that allow us to execute Java processors
+- [x] Add a Java Virtual Machine (JVM) runner (`rdfc:JvmRunner`) that allow us to execute Java processors
   - Import its semantic definition which, in this case, is packed within the built JAR file of the runner
     ```turtle
     ### Import runners and processors
@@ -284,7 +284,7 @@ To help you with this, we prepared an [RML mapping file](./pipeline/resources/ma
            rdfc:instantiaties rdfc:JvmRunner;
        ].
     ```
-- [ ] Add an `rdfc:RmlMapper` processor instance
+- [x] Add an `rdfc:RmlMapper` processor instance
   - Install the Java processor using Gradle:
     - If you do not want to use Gradle, you can manually download the JAR files from [JitPack](https://javadoc.jitpack.io/com/github/rdf-connect/rml-processor-jvm/master-SNAPSHOT/rml-processor-jvm-master-SNAPSHOT-all.jar) and put them in `pipeline/build/plugins/`. Otherwise, you can use the provided Dockerfile to run Gradle in a container.
     - Create a `build.gradle` file inside the `./pipeline` folder with the following content
@@ -352,7 +352,7 @@ To help you with this, we prepared an [RML mapping file](./pipeline/resources/ma
              rdfc:processor <mapper>;
          ].
       ```
-- [ ] Redirect the logging processor to log the resulting **RDF output** instead of the initial raw JSON
+- [x] Redirect the logging processor to log the resulting **RDF output** instead of the initial raw JSON
   ```turtle
   ### Define the processors
   # Processor to log the output
@@ -361,7 +361,7 @@ To help you with this, we prepared an [RML mapping file](./pipeline/resources/ma
         rdfc:level "info";
         rdfc:label "output".
   ```
-- [ ] Run the pipeline:  
+- [x] Run the pipeline:  
   ```bash
   npx rdfc pipeline.ttl
   # or with debug logging:

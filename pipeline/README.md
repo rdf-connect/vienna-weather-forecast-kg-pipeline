@@ -14,6 +14,14 @@ Install the Node.js dependencies:
 npm install
 ```
 
+#### Java
+
+Install the Java dependencies using Gradle:
+
+```shell
+gradle copyPlugins
+```
+
 ### Run the Pipeline
 
 Run the pipeline using the `rdfc` command:
