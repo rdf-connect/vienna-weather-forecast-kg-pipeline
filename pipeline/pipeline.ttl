@@ -6,6 +6,7 @@
 ### Import runners and processors
 <> owl:imports <./node_modules/@rdfc/js-runner/index.ttl>.
 <> owl:imports <https://javadoc.jitpack.io/com/github/rdf-connect/jvm-runner/runner/master-SNAPSHOT/runner-master-SNAPSHOT-index.jar>.
+<> owl:imports <./.venv/lib/python3.13/site-packages/rdfc_runner/index.ttl>.
 
 <> owl:imports <./node_modules/@rdfc/http-utils-processor-ts/processors.ttl>.
 <> owl:imports <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
@@ -13,12 +14,14 @@
 <> owl:imports <./build/plugins/rml-processor-jvm-master-SNAPSHOT-all.jar>.
 <> owl:imports <./node_modules/@rdfc/shacl-processor-ts/processors.ttl>.
 <> owl:imports <./node_modules/@rdfc/sparql-ingest-processor-ts/processors.ttl>.
+<> owl:imports <./.venv/lib/python3.13/site-packages/rdfc_translation_processor/processor.ttl>.
 
 
 ### Define the channels
 <json> a rdfc:Reader, rdfc:Writer.
 <mappingData> a rdfc:Reader, rdfc:Writer.
 <rdf> a rdfc:Reader, rdfc:Writer.
+<translated> a rdfc:Reader, rdfc:Writer.
 <validated> a rdfc:Reader, rdfc:Writer.
 <report> a rdfc:Reader, rdfc:Writer.
 <sparql> a rdfc:Reader, rdfc:Writer.
@@ -32,6 +35,9 @@
    ], [
        rdfc:instantiates rdfc:JvmRunner;
        rdfc:processor <mapper>;
+   ], [
+       rdfc:instantiates rdfc:PyRunner;
+       rdfc:processor <translator>;
    ].
 
 
@@ -60,10 +66,18 @@
         rdfc:format "turtle";
     ].
 
+# Processor to translate RDF literals from German to English
+<translator> a rdfc:TranslationProcessor;
+      rdfc:reader <rdf>;
+      rdfc:writer <translated>;
+      rdfc:model "Helsinki-NLP/opus-mt-de-en";
+      rdfc:sourceLanguage "de";
+      rdfc:targetLanguage "en".
+
 # Processor to validate the output RDF with SHACL
 <validator> a rdfc:Validate;
     rdfc:shaclPath "./resources/shacl-shape.ttl";
-    rdfc:incoming <rdf>;
+    rdfc:incoming <translated>;
     rdfc:outgoing <validated>;
     rdfc:report <report>;
     rdfc:validationIsFatal false;

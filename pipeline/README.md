@@ -22,6 +22,15 @@ Install the Java dependencies using Gradle:
 gradle copyPlugins
 ```
 
+#### Python
+
+Install the Python dependencies:
+
+```shell
+hatch env create
+hatch shell
+```
+
 ### Run the Pipeline
 
 Run the pipeline using the `rdfc` command:

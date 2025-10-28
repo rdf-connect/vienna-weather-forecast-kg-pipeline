@@ -771,11 +771,11 @@ Run your Python processor inside the pipeline with a Python runner for RDF-Conne
 
 **Steps:**
 
-- [ ] Build the processor into a package
+- [x] Build the processor into a package
   ```bash
   hatch build
   ```
-- [ ] Create a `pyproject.toml` file inside the `pipeline/` folder to configure the Python environment for the pipeline
+- [x] Create a `pyproject.toml` file inside the `pipeline/` folder to configure the Python environment for the pipeline
   - Specify the Python version to use to one specific version (e.g., `==3.13.*`). You need this to have a deterministic path for the `owl:imports` statement
   - Configure `[tool.hatch.envs.default]` to use a virtual environment called `.venv`
   ```toml
@@ -802,7 +802,7 @@ Run your Python processor inside the pipeline with a Python runner for RDF-Conne
   installer = "uv"
   env-vars = { PYTHONPATH = "src" }
   ```
-- [ ] Add an instance of your processor to the pipeline
+- [x] Add an instance of your processor to the pipeline
   - Install your built processor locally
     ```bash
     uv add ../processor/dist/rdfc_translation_processor-0.0.1.tar.gz
@@ -828,7 +828,7 @@ Run your Python processor inside the pipeline with a Python runner for RDF-Conne
           rdfc:sourceLanguage "de";
           rdfc:targetLanguage "en".
       ```
-- [ ] Update the input channel of the SHACL validator to read from the output channel of your processor
+- [x] Update the input channel of the SHACL validator to read from the output channel of your processor
   ```turtle
   ### Define the processors
   # Processor to validate the output RDF with SHACL
@@ -840,7 +840,7 @@ Run your Python processor inside the pipeline with a Python runner for RDF-Conne
       rdfc:validationIsFatal false;
       rdfc:mime "text/turtle".
     ```
-- [ ] Add `rdfc:PyRunner` to the pipeline and attach your processor that needs to be run in Python
+- [x] Add `rdfc:PyRunner` to the pipeline and attach your processor that needs to be run in Python
   - Import its semantic definition
     ```turtle
     ### Import runners and processors
