@@ -385,7 +385,7 @@ To help you with this, we prepared a [SHACL shape file](./pipeline/resources/sha
 
 **Steps:**
 
-- [ ] Add an `rdfc:Validate` processor instance
+- [x] Add an `rdfc:Validate` processor instance
   - Install the processor
     ```bash
     npm install @rdfc/shacl-processor-ts
@@ -425,7 +425,7 @@ To help you with this, we prepared a [SHACL shape file](./pipeline/resources/sha
            rdfc:processor <mapper>;
        ].
     ```
-- [ ] Use a new instance of `rdfc:LogProcessorJs` to log validation reports at `warn` level
+- [x] Use a new instance of `rdfc:LogProcessorJs` to log validation reports at `warn` level
   - Define the new logger instance
     ```turtle
     ### Define the processors  
@@ -447,7 +447,7 @@ To help you with this, we prepared a [SHACL shape file](./pipeline/resources/sha
            rdfc:processor <mapper>;
        ].
     ```
-- [ ] Log only valid data through the first logger
+- [x] Log only valid data through the first logger
   ```turtle
   ### Define the processors
   # Processor to log the output
@@ -456,11 +456,11 @@ To help you with this, we prepared a [SHACL shape file](./pipeline/resources/sha
       rdfc:level "info";
       rdfc:label "output".
   ``` 
-- [ ] Run the pipeline with a successfully validated result. You shall see the produced RDF in the console, similarly to the outcome of `task-2`, given that the validation is successful.
+- [x] Run the pipeline with a successfully validated result. You shall see the produced RDF in the console, similarly to the outcome of `task-2`, given that the validation is successful.
   ```bash
   npx rdfc pipeline.ttl
   ```
-- [ ] Run the pipeline with a failed validation
+- [x] Run the pipeline with a failed validation
   - To see the validation process in action, let's alter the SHACL shape to require a property that won't be present in the data. We can add the following property shape
     ```turtle
     ex:ObservationCollectionShape a sh:NodeShape ;

@@ -11,19 +11,22 @@
 <> owl:imports <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
 <> owl:imports <./node_modules/@rdfc/file-utils-processors-ts/processors.ttl>.
 <> owl:imports <./build/plugins/rml-processor-jvm-master-SNAPSHOT-all.jar>.
+<> owl:imports <./node_modules/@rdfc/shacl-processor-ts/processors.ttl>.
 
 
 ### Define the channels
 <json> a rdfc:Reader, rdfc:Writer.
 <mappingData> a rdfc:Reader, rdfc:Writer.
 <rdf> a rdfc:Reader, rdfc:Writer.
+<validated> a rdfc:Reader, rdfc:Writer.
+<report> a rdfc:Reader, rdfc:Writer.
 
 
 ### Define the pipeline
 <> a rdfc:Pipeline;
    rdfc:consistsOf [
        rdfc:instantiates rdfc:NodeRunner;
-       rdfc:processor <fetcher>, <logger>, <mappingReader>;
+       rdfc:processor <fetcher>, <logger>, <mappingReader>, <validator>, <reporter>;
    ], [
        rdfc:instantiates rdfc:JvmRunner;
        rdfc:processor <mapper>;
@@ -55,8 +58,23 @@
         rdfc:format "turtle";
     ].
 
+# Processor to validate the output RDF with SHACL
+<validator> a rdfc:Validate;
+    rdfc:shaclPath "./resources/shacl-shape.ttl";
+    rdfc:incoming <rdf>;
+    rdfc:outgoing <validated>;
+    rdfc:report <report>;
+    rdfc:validationIsFatal false;
+    rdfc:mime "text/turtle".
+
+# Processor to log the SHACL report
+<reporter> a rdfc:LogProcessorJs;
+      rdfc:reader <report>;
+      rdfc:level "warn";
+      rdfc:label "report".
+
 # Processor to log the output
 <logger> a rdfc:LogProcessorJs;
-      rdfc:reader <rdf>;
+      rdfc:reader <validated>;
       rdfc:level "info";
       rdfc:label "output".
