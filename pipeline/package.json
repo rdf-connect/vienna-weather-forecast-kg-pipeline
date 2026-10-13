@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline",
   "dependencies": {
-    "@rdfc/orchestrator-js": "^2.0.0"
+    "@rdfc/orchestrator-js": "^2.3.0"
   }
 }
